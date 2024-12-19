@@ -132,7 +132,7 @@ class Chromatics(object):
                     array[_i,_j,1] = t
                     array[_i,_j,2] = p
                     continue
-                if i == 0:
+                if i == 1:
                     array[_i,_j,0] = q
                     array[_i,_j,1] = u
                     array[_i,_j,2] = p
