@@ -3,6 +3,7 @@
 
 #version 0.1
 
+import sys
 import pygame as pg
 
 
@@ -32,6 +33,7 @@ class Chromatics(object):
         self._font = None
         self._clipboard = None
         self._clipboard_type = None
+        self._clipboard_format = None
         self._update_rects = []
         self._update_display = False
 
@@ -92,12 +94,22 @@ class Chromatics(object):
         self._colorselect_area = pg.Rect(self._width-40, 10, 30, 30)
 
     def set_colorvalue(self):
-        pg.init()
+        pg.font.init()
         self._font = pg.font.Font(None, 18)
         self._colorvalue = pg.Surface((40,60))
-        pg.scrap.init()
-        self._clipboard = pg.scrap
-        self._clipboard_type = pg.SCRAP_TEXT
+        try:
+            self._clipboard = pg.scrap
+            self._clipboard.init()
+            if sys.platform in ('win32', 'linux'):
+                self._clipboard_type = 'text/plain;charset=utf-8'
+                self._clipboard_format = 'utf-8'
+                if sys.platform == 'linux':
+                    self._clipboard.set_mode(pg.SCRAP_CLIPBOARD)
+            else:
+                self._clipboard_type = pg.SCRAP_TEXT
+                self._clipboard_format = 'ascii'
+        except:
+            self._clipboard = None
 
     def generate_spectrum(self):
         array = self._spectrum_array
@@ -261,11 +273,9 @@ class Chromatics(object):
 
     def select_colorselect(self):
         _color = str(self.get_colorvalue())
-        _type = self._clipboard_type
-        try:
-            self._clipboard.put(_type, _color)
-        except:
-            pass
+        if self._clipboard:
+            self._clipboard.put(
+                self._clipboard_type, _color.encode(self._clipboard_format))
 
     def refresh(self):
         self._update_rects.append(self._display_area)

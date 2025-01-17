@@ -1,5 +1,6 @@
 0.10_dev
--revised generate_colormap method.
+-revise generate_colormap method.
+-revise clipboard functionality.
 
 0.10    2024-12-19
 -initial release
