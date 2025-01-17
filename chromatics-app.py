@@ -52,7 +52,10 @@ class App(object):
         except AttributeError:
             image_dat = base64.decodestring(img)
         image_obj = BytesIO(image_dat)
-        icon = pg.image.load(image_obj)
+        icon_img = pg.image.load(image_obj)
+        icon = pg.Surface((32,32), pg.SRCALPHA)
+        icon.blit(icon_img, (0,6))
+        pg.draw.rect(icon, (10,10,10), (0,6,32,20), 1)
         return icon
 
     def display(self):
