@@ -1,0 +1,6 @@
+0.10_dev
+-revised generate_colormap method.
+
+0.10    2024-12-19
+-initial release
+
