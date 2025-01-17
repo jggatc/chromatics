@@ -86,7 +86,7 @@ class App(object):
                     self.quit = True
             elif evt.type in (pg.QUIT, self.windowclose):
                 self.quit = True
-            return self.quit
+        return self.quit
 
     def update(self):
         if self.update_display:
