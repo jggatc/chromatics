@@ -1,15 +1,23 @@
 #Chromatics - Copyright (C) 2021 James Garnon <https://gatc.ca/>
 #Released under the MIT License <https://opensource.org/licenses/MIT>
 
-#version 0.1
+"""
+Chromatics - Pygame Color Module
+"""
 
 import sys
 import pygame as pg
 
 
 class Chromatics(object):
+    """
+    Chromatics object.
+    """
 
     def __init__(self):
+        """
+        Initiation of Chromatics object.
+        """
         self._display = None
         self._size = None
         self._display_area = None
@@ -44,6 +52,13 @@ class Chromatics(object):
                    colormap_pos = (10,10)):
         """
         Initiation of chromatics.
+
+        Arguments:
+            * display_size      default: (360, 360)
+            * spectrum_size     default: (360, 40)
+            * colormap_size     default: (300, 300)
+            * spectrum_pos      default: (0, 320)
+            * colormap_pos      default: (10, 10)
         """
         self.set_display(display_size)
         self.set_spectrum(spectrum_size, spectrum_pos)
@@ -55,12 +70,25 @@ class Chromatics(object):
         self._selection['y'] = colormap_size[1] - 100
 
     def get_width(self):
+        """
+        Return chromatics display width.
+        """
         return self._width
 
     def get_height(self):
+        """
+        Return chromatics display height.
+        """
         return self._height
 
     def set_display(self, size=None, display=None):
+        """
+        Set chromatics display.
+
+        Arguments include size of chromatics surface display.
+        Optionally, a display surface can be provided.
+        Called with chromatics.init().
+        """
         if display is None:
             self._size = size
             self._width = size[0]
@@ -76,12 +104,24 @@ class Chromatics(object):
             self._display_area = self._display.get_rect()
 
     def set_spectrum(self, size, position):
+        """
+        Set chromatics spectrum.
+
+        Arguments include spectrum size and position.
+        Called with chromatics.init().
+        """
         self._spectrum_size = size
         self._spectrum_area = pg.Rect(position, size)
         self._spectrum = pg.Surface(size)
         self._spectrum_array = pg.surfarray.array3d(self._spectrum)
 
     def set_colormap(self, size, position):
+        """
+        Set chromatics colormap.
+
+        Arguments include colormap size and position.
+        Called with chromatics.init().
+        """
         self._colormap_size = size
         self._colormap_area = pg.Rect(position, size)
         self._colormap = pg.Surface(size)
@@ -90,10 +130,18 @@ class Chromatics(object):
         self._colormap_resolution['y'] = 1.0 / size[1]
 
     def set_colorselect(self):
+        """
+        Set chromatics colorselect.
+
+        Called with chromatics.init().
+        """
         self._colorselect = pg.Surface((30,30))
         self._colorselect_area = pg.Rect(self._width-40, 10, 30, 30)
 
     def set_colorvalue(self):
+        """
+        Initiate display of RGB value.
+        """
         pg.font.init()
         self._font = pg.font.Font(None, 18)
         self._colorvalue = pg.Surface((40,60))
@@ -112,6 +160,12 @@ class Chromatics(object):
             self._clipboard = None
 
     def generate_spectrum(self):
+        """
+        Generate chromatics spectrum.
+
+        Return spectrum surface.
+        Called with chromatics.init().
+        """
         array = self._spectrum_array
         for i in range(self._spectrum_size[0]):
             r, g, b = self.hsv_to_rgb(i/360.0, 1.0, 1.0)
@@ -123,6 +177,13 @@ class Chromatics(object):
         return self._spectrum
 
     def generate_colormap(self, color=(240,1.0,1.0)):
+        """
+        Generate chromatics colormap.
+
+        Argument HSV color used for generation, default to (240, 1.0, 1.0).
+        Return colormap surface.
+        Called with chromatics.init().
+        """
         width = self._colormap_size[0]
         height = self._colormap_size[1]
         h = color[0] / 360.0
@@ -173,6 +234,12 @@ class Chromatics(object):
         return self._colormap
 
     def display(self):
+        """
+        Render chromatics images.
+
+        Render spectrum, colormap, colorselect, and colorvalue onto chromatics display.
+        Return chromatics display surface.
+        """
         self.display_spectrum()
         self.display_colormap()
         self.display_colorselect()
@@ -180,6 +247,9 @@ class Chromatics(object):
         return self._display
 
     def display_spectrum(self):
+        """
+        Render chromatics spectrum on display surface.
+        """
         spectrum_pos = (self._width-self._spectrum_size[0],
                         self._height-self._spectrum_size[1])
         rect = self._display.blit(self._spectrum, spectrum_pos)
@@ -187,11 +257,17 @@ class Chromatics(object):
         self._update_display = True
 
     def display_colormap(self):
+        """
+        Render chromatics colormap on display surface.
+        """
         rect = self._display.blit(self._colormap, self._colormap_area)
         self._update_rects.append(rect)
         self._update_display = True
 
     def display_colorselect(self):
+        """
+        Render chromatics colorselect on display surface.
+        """
         color = tuple(self._colormap_array[self._selection['x']]
                                           [self._selection['y']])
         self._colorselect.fill(color)
@@ -202,6 +278,9 @@ class Chromatics(object):
         self._update_display = True
 
     def display_colorvalue(self):
+        """
+        Render chromatics colorvalue on display surface.
+        """
         if self._font is None:
             self.set_colorvalue()
         color = self.get_colorvalue()
@@ -216,16 +295,28 @@ class Chromatics(object):
         self._update_display = True
 
     def get_colorvalue(self):
+        """
+        Return selected colorvalue.
+        """
         return tuple(self._colormap_array[self._selection['x']]
                                          [self._selection['y']])
 
     def get_spectrum(self):
+        """
+        Return chromatics spectrum surface.
+        """
         return self._spectrum
 
     def get_colormap(self):
+        """
+        Return chromatics colormap surface.
+        """
         return self._colormap
 
     def hsv_to_rgb(self, h, s, v):
+        """
+        Convert HSV to RGB.
+        """
         i = int(h*6.0)
         f = (h*6.0) - i
         p = 255 * (v * (1.0 - s))
@@ -247,6 +338,12 @@ class Chromatics(object):
             return (u, p, q)
 
     def interact(self, position):
+        """
+        Check interaction with chromatics color objects.
+
+        Interaction updates chromatics state.
+        Return True on chromatics update.
+        """
         if self._spectrum_area.collidepoint(position):
             return self.select_spectrum(position)
         elif self._colormap_area.collidepoint(position):
@@ -256,6 +353,13 @@ class Chromatics(object):
         return False
 
     def select_spectrum(self, position):
+        """
+        Select hue from chromatics spectrum.
+
+        Argument position to retrieve color hue.
+        Interaction updates chromatics state.
+        Return True on chromatics update.
+        """
         self._colormap_hue = position[0]
         self._colormap = self.generate_colormap((self._colormap_hue, 1.0, 1.0))
         self._display.blit(self._colormap, self._colormap_area)
@@ -264,6 +368,13 @@ class Chromatics(object):
         return True
 
     def select_colormap(self, position):
+        """
+        Select color from chromatics colormap.
+
+        Argument position to retrieve color.
+        Interaction updates chromatics state.
+        Return selected color.
+        """
         self._selection['x'] = position[0] - self._colormap_area[0]
         self._selection['y'] = position[1] - self._colormap_area[1]
         self.display_colorselect()
@@ -272,16 +383,25 @@ class Chromatics(object):
         return color
 
     def select_colorselect(self):
+        """
+        Color selected send to clipboard.
+        """
         _color = str(self.get_colorvalue())
         if self._clipboard:
             self._clipboard.put(
                 self._clipboard_type, _color.encode(self._clipboard_format))
 
     def refresh(self):
+        """
+        Set chromatics display refresh.
+        """
         self._update_rects.append(self._display_area)
         self._update_display = True
 
     def update(self):
+        """
+        Render chromatics display if changed.
+        """
         if self._update_display:
             pg.display.update(self._update_rects)
             self._update_rects[:] = []
