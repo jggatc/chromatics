@@ -81,27 +81,20 @@ class Chromatics(object):
         """
         return self._height
 
-    def set_display(self, size=None, display=None):
+    def set_display(self, size=None, color=(150,150,150)):
         """
         Set chromatics display.
 
-        Arguments include size of chromatics surface display.
-        Optionally, a display surface can be provided.
+        Arguments include size and color of chromatics surface display.
         Called with chromatics.init().
         """
-        if display is None:
-            self._size = size
-            self._width = size[0]
-            self._height = size[1]
-            self._display = pg.Surface((self._width, self._height))
-            self._display_area = self._display.get_rect()
-            self._display.fill((150,150,150))
-        else:
-            self._display = display
-            self._size = self._display.get_size()
-            self._width = self._size[0]
-            self._height = self._size[1]
-            self._display_area = self._display.get_rect()
+        self._size = size
+        self._width = size[0]
+        self._height = size[1]
+        self._display_color = color
+        self._display = pg.Surface((self._width, self._height))
+        self._display_area = self._display.get_rect()
+        self._display.fill(color)
 
     def set_spectrum(self, size, position):
         """
