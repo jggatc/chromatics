@@ -46,24 +46,30 @@ class Chromatics(object):
         self._update_display = False
 
     def init(self, display_size = (360, 360),
+                   display_color = (150, 150, 150),
                    spectrum_size = (360, 40),
                    colormap_size = (300, 300),
-                   spectrum_pos = (0,320),
-                   colormap_pos = (10,10)):
+                   colorselect_size = (30, 30),
+                   spectrum_pos = (0, 320),
+                   colormap_pos = (10, 10),
+                   colorselect_pos = (320, 10)):
         """
         Initiation of chromatics.
 
         Arguments:
             * display_size      default: (360, 360)
+            * display_color     default: (150, 150, 150)
             * spectrum_size     default: (360, 40)
             * colormap_size     default: (300, 300)
+            * colorselect_size  default: (30, 30)
             * spectrum_pos      default: (0, 320)
             * colormap_pos      default: (10, 10)
+            * colorselect_pos   default: (320, 10)
         """
-        self.set_display(display_size)
+        self.set_display(display_size, display_color)
         self.set_spectrum(spectrum_size, spectrum_pos)
         self.set_colormap(colormap_size, colormap_pos)
-        self.set_colorselect()
+        self.set_colorselect(colorselect_size, colorselect_pos)
         self.generate_spectrum()
         self.generate_colormap()
         self._selection['x'] = colormap_size[0] - 100

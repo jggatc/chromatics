@@ -1,6 +1,11 @@
 0.10_dev
 -revise generate_colormap method.
 -revise clipboard functionality.
+-revise set_display method.
+-revise set_colorselect method.
+-revise display_spectrum method.
+-revise display_colorvalue method.
+-revise chromatics init method.
 
 0.10    2024-12-19
 -initial release
