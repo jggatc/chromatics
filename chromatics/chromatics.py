@@ -275,7 +275,7 @@ class Chromatics(object):
         if self._font is None:
             self.set_colorvalue()
         color = self.get_colorvalue()
-        self._colorvalue.fill((150,150,150))
+        self._colorvalue.fill(self._display_color)
         self._colorstr[0] = 'R ' + str(color[0])
         self._colorstr[1] = 'G ' + str(color[1])
         self._colorstr[2] = 'B ' + str(color[2])
