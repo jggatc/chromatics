@@ -243,9 +243,7 @@ class Chromatics(object):
         """
         Render chromatics spectrum on display surface.
         """
-        spectrum_pos = (self._width-self._spectrum_size[0],
-                        self._height-self._spectrum_size[1])
-        rect = self._display.blit(self._spectrum, spectrum_pos)
+        rect = self._display.blit(self._spectrum, self._spectrum_area)
         self._update_rects.append(rect)
         self._update_display = True
 
