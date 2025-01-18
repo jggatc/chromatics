@@ -122,14 +122,14 @@ class Chromatics(object):
         self._colormap_resolution['x'] = 1.0 / size[0]
         self._colormap_resolution['y'] = 1.0 / size[1]
 
-    def set_colorselect(self):
+    def set_colorselect(self, size, position):
         """
         Set chromatics colorselect.
 
         Called with chromatics.init().
         """
-        self._colorselect = pg.Surface((30,30))
-        self._colorselect_area = pg.Rect(self._width-40, 10, 30, 30)
+        self._colorselect = pg.Surface(size)
+        self._colorselect_area = pg.Rect(position, size)
 
     def set_colorvalue(self):
         """
